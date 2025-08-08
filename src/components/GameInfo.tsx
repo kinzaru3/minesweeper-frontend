@@ -11,6 +11,7 @@ interface GameInfoProps {
   boardWidth: number;
   boardHeight: number;
   isFlagMode: boolean;
+  elapsedTime: number;
   onDifficultyChange: (difficulty: GameDifficulty) => void;
   onReset: () => void;
   onToggleFlagMode: () => void;
@@ -24,6 +25,7 @@ export default function GameInfo({
   boardWidth,
   boardHeight,
   isFlagMode,
+  elapsedTime,
   onDifficultyChange,
   onReset,
   onToggleFlagMode,
@@ -73,6 +75,13 @@ export default function GameInfo({
             <div className={styles.statLabel}>ボードサイズ</div>
             <div className={`${styles.statValue} ${styles.size}`}>
               {boardWidth}×{boardHeight}
+            </div>
+          </div>
+
+          <div className={styles.statItem}>
+            <div className={styles.statLabel}>経過時間</div>
+            <div className={`${styles.statValue} ${styles.timer}`}>
+              {Math.floor(elapsedTime / 60)}:{(elapsedTime % 60).toString().padStart(2, '0')}
             </div>
           </div>
         </div>

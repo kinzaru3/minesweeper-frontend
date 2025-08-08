@@ -36,6 +36,7 @@ describe('GameInfo Component', () => {
     boardWidth: 9,
     boardHeight: 9,
     isFlagMode: false,
+    elapsedTime: 0,
     onDifficultyChange: jest.fn(),
     onReset: jest.fn(),
     onToggleFlagMode: jest.fn(),
@@ -54,6 +55,8 @@ describe('GameInfo Component', () => {
     expect(screen.getByText('3')).toBeInTheDocument()
     expect(screen.getByText('ボードサイズ')).toBeInTheDocument()
     expect(screen.getByText('9×9')).toBeInTheDocument()
+    expect(screen.getByText('経過時間')).toBeInTheDocument()
+    expect(screen.getByText('0:00')).toBeInTheDocument()
   })
 
   it('renders game status correctly', () => {
@@ -153,6 +156,25 @@ describe('GameInfo Component', () => {
     
     // Check that the board size element has the size class
     expect(statValueElement).toHaveClass('size')
+  })
+
+  it('renders timer correctly', () => {
+    render(<GameInfo {...defaultProps} elapsedTime={65} />)
+
+    expect(screen.getByText('経過時間')).toBeInTheDocument()
+    expect(screen.getByText('1:05')).toBeInTheDocument()
+  })
+
+  it('renders timer with zero padding', () => {
+    render(<GameInfo {...defaultProps} elapsedTime={30} />)
+
+    expect(screen.getByText('0:30')).toBeInTheDocument()
+  })
+
+  it('renders timer with large values', () => {
+    render(<GameInfo {...defaultProps} elapsedTime={3661} />)
+
+    expect(screen.getByText('61:01')).toBeInTheDocument()
   })
 
   it('renders different board sizes correctly', () => {

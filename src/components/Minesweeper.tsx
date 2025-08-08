@@ -10,6 +10,7 @@ export default function Minesweeper() {
   const {
     gameState,
     difficulty,
+    elapsedTime,
     resetGame,
     toggleFlagMode,
     handleCellClick,
@@ -71,6 +72,7 @@ export default function Minesweeper() {
             boardWidth={gameState.width}
             boardHeight={gameState.height}
             isFlagMode={gameState.isFlagMode}
+            elapsedTime={elapsedTime}
             onDifficultyChange={handleDifficultyChange}
             onReset={handleReset}
             onToggleFlagMode={toggleFlagMode}
