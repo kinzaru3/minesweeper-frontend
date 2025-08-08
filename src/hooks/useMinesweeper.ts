@@ -64,24 +64,26 @@ export function useMinesweeper() {
     setGameState(prevState => {
       let newCells = [...prevState.cells];
 
-      // 旗立モードの場合、フラグを切り替える
-      if (prevState.isFlagMode) {
-        newCells = toggleFlag(newCells, x, y);
-        const stats = getGameStats(newCells);
-        return {
-          ...prevState,
-          cells: newCells,
-          flaggedCount: stats.flaggedCount,
-        };
-      }
-
-      // 最初のクリックの場合、地雷を配置
+      // 最初のクリックの場合、地雷を配置してセルを開く（旗立モードに関係なく）
       if (prevState.isFirstClick) {
         newCells = placeMines(newCells, prevState.mineCount, x, y);
+        newCells = revealCell(newCells, x, y);
+      } else {
+        // 2回目以降のクリックの場合
+        if (prevState.isFlagMode) {
+          // 旗立モードの場合、フラグを切り替える
+          newCells = toggleFlag(newCells, x, y);
+          const stats = getGameStats(newCells);
+          return {
+            ...prevState,
+            cells: newCells,
+            flaggedCount: stats.flaggedCount,
+          };
+        } else {
+          // 通常モードの場合、セルを開く
+          newCells = revealCell(newCells, x, y);
+        }
       }
-
-      // セルを開く
-      newCells = revealCell(newCells, x, y);
 
       // ゲーム状態をチェック
       const newGameStatus = checkGameStatus(newCells, prevState.mineCount);
