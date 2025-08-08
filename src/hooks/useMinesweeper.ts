@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { Cell, GameState, GameDifficulty } from '@/types/minesweeper';
 import {
   getDifficultyConfig,
@@ -30,6 +30,11 @@ export function useMinesweeper() {
     };
   });
 
+  // タイマー関連の状態
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
   const resetGame = useCallback((newDifficulty?: GameDifficulty) => {
     const newDiff = newDifficulty || difficulty;
     const config = getDifficultyConfig(newDiff);
@@ -45,6 +50,14 @@ export function useMinesweeper() {
       isFirstClick: true,
       isFlagMode: true,
     });
+    
+    // タイマーをリセット
+    setElapsedTime(0);
+    setIsTimerRunning(false);
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
     
     if (newDifficulty) {
       setDifficulty(newDifficulty);
@@ -68,6 +81,14 @@ export function useMinesweeper() {
       if (prevState.isFirstClick) {
         newCells = placeMines(newCells, prevState.mineCount, x, y);
         newCells = revealCell(newCells, x, y);
+        
+        // タイマーを開始
+        if (!isTimerRunning) {
+          setIsTimerRunning(true);
+          timerRef.current = setInterval(() => {
+            setElapsedTime(prev => prev + 1);
+          }, 1000);
+        }
       } else {
         // 2回目以降のクリックの場合
         if (prevState.isFlagMode) {
@@ -93,6 +114,15 @@ export function useMinesweeper() {
         newCells = revealAllMines(newCells);
       }
 
+      // ゲーム終了時はタイマーを停止
+      if (newGameStatus === 'won' || newGameStatus === 'lost') {
+        setIsTimerRunning(false);
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
+      }
+
       // 統計を更新
       const stats = getGameStats(newCells);
 
@@ -105,7 +135,7 @@ export function useMinesweeper() {
         flaggedCount: stats.flaggedCount,
       };
     });
-  }, [gameState.gameStatus, gameState.isFirstClick, gameState.mineCount, gameState.isFlagMode]);
+  }, [gameState.gameStatus, gameState.isFirstClick, gameState.mineCount, gameState.isFlagMode, isTimerRunning]);
 
   const handleCellRightClick = useCallback((x: number, y: number) => {
     if (gameState.gameStatus !== 'playing') return;
@@ -122,9 +152,20 @@ export function useMinesweeper() {
     });
   }, [gameState.gameStatus]);
 
+  // コンポーネントのクリーンアップ時にタイマーを停止
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, []);
+
   return {
     gameState,
     difficulty,
+    elapsedTime,
+    isTimerRunning,
     resetGame,
     toggleFlagMode,
     handleCellClick,

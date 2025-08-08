@@ -184,4 +184,53 @@ describe('useMinesweeper Hook', () => {
     // The second click should not work because game status is 'won'
     expect(placeMines).toHaveBeenCalledTimes(1) // Only called once for first click
   })
+
+  it('initializes with timer state', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    expect(result.current.elapsedTime).toBe(0)
+    expect(result.current.isTimerRunning).toBe(false)
+  })
+
+  it('starts timer on first click', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    act(() => {
+      result.current.handleCellClick(0, 0)
+    })
+
+    expect(result.current.isTimerRunning).toBe(true)
+  })
+
+  it('stops timer when game ends', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    // Mock game status as 'won' for the next call
+    ;(checkGameStatus as jest.Mock).mockReturnValueOnce('won')
+
+    act(() => {
+      result.current.handleCellClick(0, 0)
+    })
+
+    expect(result.current.isTimerRunning).toBe(false)
+  })
+
+  it('resets timer when game is reset', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    // Start timer
+    act(() => {
+      result.current.handleCellClick(0, 0)
+    })
+
+    expect(result.current.isTimerRunning).toBe(true)
+
+    // Reset game
+    act(() => {
+      result.current.resetGame()
+    })
+
+    expect(result.current.elapsedTime).toBe(0)
+    expect(result.current.isTimerRunning).toBe(false)
+  })
 })
