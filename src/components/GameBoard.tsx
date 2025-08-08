@@ -11,6 +11,14 @@ interface GameBoardProps {
 }
 
 export default function GameBoard({ board, onCellClick, onCellRightClick }: GameBoardProps) {
+  const handleCellClick = (x: number, y: number) => {
+    onCellClick(x, y);
+  };
+
+  const handleCellRightClick = (x: number, y: number) => {
+    onCellRightClick(x, y);
+  };
+
   return (
     <div className={styles.gameBoard}>
       <div 
@@ -24,8 +32,8 @@ export default function GameBoard({ board, onCellClick, onCellRightClick }: Game
             <Cell
               key={cell.id}
               cell={cell}
-              onClick={onCellClick}
-              onRightClick={onCellRightClick}
+              onClick={handleCellClick}
+              onRightClick={handleCellRightClick}
             />
           ))
         )}

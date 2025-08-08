@@ -8,6 +8,7 @@ import {
   checkGameStatus,
   getGameStats,
   revealAllMines,
+  autoRevealCell,
 } from '@/utils/minesweeper'
 
 // Mock the utils
@@ -41,6 +42,7 @@ jest.mock('@/utils/minesweeper', () => ({
   checkGameStatus: jest.fn(() => 'playing'),
   getGameStats: jest.fn(() => ({ revealedCount: 0, flaggedCount: 0 })),
   revealAllMines: jest.fn((board) => board),
+  autoRevealCell: jest.fn((board) => board),
 }))
 
 describe('useMinesweeper Hook', () => {
