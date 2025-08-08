@@ -10,6 +10,7 @@ export default function Minesweeper() {
     gameState,
     difficulty,
     resetGame,
+    toggleFlagMode,
     handleCellClick,
     handleCellRightClick,
   } = useMinesweeper();
@@ -42,8 +43,10 @@ export default function Minesweeper() {
             difficulty={difficulty}
             boardWidth={gameState.width}
             boardHeight={gameState.height}
+            isFlagMode={gameState.isFlagMode}
             onDifficultyChange={handleDifficultyChange}
             onReset={handleReset}
+            onToggleFlagMode={toggleFlagMode}
           />
         </div>
       </div>
@@ -62,6 +65,9 @@ export default function Minesweeper() {
 
           <div className={styles.footer}>
             <p>💡 ヒント: 数字は周囲の地雷の数を示しています</p>
+            {gameState.isFlagMode && (
+              <p className={styles.flagModeHint}>🚩 旗立モード: 左クリックでフラグを立てます</p>
+            )}
           </div>
         </div>
       </div>

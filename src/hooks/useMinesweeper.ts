@@ -26,6 +26,7 @@ export function useMinesweeper() {
       revealedCount: 0,
       gameStatus: 'playing',
       isFirstClick: true,
+      isFlagMode: false,
     };
   });
 
@@ -42,6 +43,7 @@ export function useMinesweeper() {
       revealedCount: 0,
       gameStatus: 'playing',
       isFirstClick: true,
+      isFlagMode: false,
     });
     
     if (newDifficulty) {
@@ -49,11 +51,29 @@ export function useMinesweeper() {
     }
   }, [difficulty]);
 
+  const toggleFlagMode = useCallback(() => {
+    setGameState(prevState => ({
+      ...prevState,
+      isFlagMode: !prevState.isFlagMode,
+    }));
+  }, []);
+
   const handleCellClick = useCallback((x: number, y: number) => {
     if (gameState.gameStatus !== 'playing') return;
 
     setGameState(prevState => {
       let newCells = [...prevState.cells];
+
+      // 旗立モードの場合、フラグを切り替える
+      if (prevState.isFlagMode) {
+        newCells = toggleFlag(newCells, x, y);
+        const stats = getGameStats(newCells);
+        return {
+          ...prevState,
+          cells: newCells,
+          flaggedCount: stats.flaggedCount,
+        };
+      }
 
       // 最初のクリックの場合、地雷を配置
       if (prevState.isFirstClick) {
@@ -83,7 +103,7 @@ export function useMinesweeper() {
         flaggedCount: stats.flaggedCount,
       };
     });
-  }, [gameState.gameStatus, gameState.isFirstClick, gameState.mineCount]);
+  }, [gameState.gameStatus, gameState.isFirstClick, gameState.mineCount, gameState.isFlagMode]);
 
   const handleCellRightClick = useCallback((x: number, y: number) => {
     if (gameState.gameStatus !== 'playing') return;
@@ -104,6 +124,7 @@ export function useMinesweeper() {
     gameState,
     difficulty,
     resetGame,
+    toggleFlagMode,
     handleCellClick,
     handleCellRightClick,
   };

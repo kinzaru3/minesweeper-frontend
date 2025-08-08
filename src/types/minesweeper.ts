@@ -21,6 +21,7 @@ export interface GameState {
   revealedCount: number;
   gameStatus: 'playing' | 'won' | 'lost';
   isFirstClick: boolean;
+  isFlagMode: boolean;
 }
 
 export type GameDifficulty = 'easy' | 'medium' | 'hard';
