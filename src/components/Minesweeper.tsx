@@ -64,7 +64,6 @@ export default function Minesweeper() {
           </div>
 
           <div className={styles.footer}>
-            <p>💡 ヒント: 数字は周囲の地雷の数を示しています</p>
             {gameState.isFlagMode && (
               <p className={styles.flagModeHint}>🚩 旗立モード: 左クリックでフラグを立てます</p>
             )}
