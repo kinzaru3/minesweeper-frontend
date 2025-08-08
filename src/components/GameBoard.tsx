@@ -11,7 +11,7 @@ interface GameBoardProps {
 
 export default function GameBoard({ board, onCellClick, onCellRightClick }: GameBoardProps) {
   return (
-    <div className="inline-block border-2 border-gray-600 bg-gray-600 p-1">
+    <div className="inline-block border-2 border-gray-500 bg-gray-700 p-1">
       <div 
         className="grid gap-0"
         style={{

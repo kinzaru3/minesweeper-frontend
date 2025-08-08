@@ -11,14 +11,14 @@ interface CellProps {
 
 const numberColors = [
   'text-transparent', // 0
-  'text-blue-600',    // 1
-  'text-green-600',   // 2
-  'text-red-600',     // 3
-  'text-purple-600',  // 4
-  'text-yellow-600',  // 5
-  'text-cyan-600',    // 6
-  'text-gray-600',    // 7
-  'text-pink-600',    // 8
+  'text-blue-400',    // 1
+  'text-green-400',   // 2
+  'text-red-400',     // 3
+  'text-purple-400',  // 4
+  'text-yellow-400',  // 5
+  'text-cyan-400',    // 6
+  'text-gray-400',    // 7
+  'text-pink-400',    // 8
 ];
 
 export default function Cell({ cell, onClick, onRightClick }: CellProps) {
@@ -74,27 +74,27 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
   };
 
   const getCellClasses = () => {
-    const baseClasses = 'w-8 h-8 border border-gray-400 flex items-center justify-center text-sm font-bold select-none transition-colors';
+    const baseClasses = 'w-8 h-8 border border-gray-600 flex items-center justify-center text-sm font-bold select-none transition-colors';
     
     if (cell.state === 'hidden') {
-      return `${baseClasses} bg-gray-200 hover:bg-gray-300 ${isPressed ? 'bg-gray-300' : ''}`;
+      return `${baseClasses} bg-gray-700 hover:bg-gray-600 ${isPressed ? 'bg-gray-600' : ''}`;
     }
     
     if (cell.state === 'flagged') {
-      return `${baseClasses} bg-gray-200`;
+      return `${baseClasses} bg-gray-700`;
     }
     
     if (cell.state === 'revealed') {
       if (cell.isMine) {
-        return `${baseClasses} bg-red-500 text-white`;
+        return `${baseClasses} bg-red-600 text-white`;
       }
       
       if (cell.type === 'empty') {
-        return `${baseClasses} bg-gray-100`;
+        return `${baseClasses} bg-gray-800`;
       }
       
       if (cell.type === 'number') {
-        return `${baseClasses} bg-gray-100 ${numberColors[cell.mineCount]}`;
+        return `${baseClasses} bg-gray-800 ${numberColors[cell.mineCount]}`;
       }
     }
     

@@ -37,36 +37,36 @@ export default function GameInfo({
   const getStatusColor = () => {
     switch (gameStatus) {
       case 'won':
-        return 'text-green-600';
+        return 'text-green-400';
       case 'lost':
-        return 'text-red-600';
+        return 'text-red-400';
       default:
-        return 'text-blue-600';
+        return 'text-blue-400';
     }
   };
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded-lg">
+    <div className="bg-gray-800 text-white p-4 rounded-lg border border-gray-600">
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
         {/* ゲーム統計 */}
         <div className="flex items-center gap-6">
           <div className="text-center">
             <div className="text-sm text-gray-300">残り地雷</div>
-            <div className="text-2xl font-bold text-red-500">
+            <div className="text-2xl font-bold text-red-400">
               {mineCount - flaggedCount}
             </div>
           </div>
           
           <div className="text-center">
             <div className="text-sm text-gray-300">フラグ</div>
-            <div className="text-2xl font-bold text-yellow-500">
+            <div className="text-2xl font-bold text-yellow-400">
               {flaggedCount}
             </div>
           </div>
 
           <div className="text-center">
             <div className="text-sm text-gray-300">ボードサイズ</div>
-            <div className="text-lg font-bold text-blue-500">
+            <div className="text-lg font-bold text-blue-400">
               {boardWidth}×{boardHeight}
             </div>
           </div>
@@ -87,7 +87,7 @@ export default function GameInfo({
               className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                 difficulty === 'easy'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
               }`}
             >
               初級
@@ -97,7 +97,7 @@ export default function GameInfo({
               className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                 difficulty === 'medium'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
               }`}
             >
               中級
@@ -107,7 +107,7 @@ export default function GameInfo({
               className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
                 difficulty === 'hard'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-600 text-gray-300 hover:bg-gray-500'
+                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
               }`}
             >
               上級
