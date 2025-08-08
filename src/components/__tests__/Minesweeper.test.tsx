@@ -88,7 +88,7 @@ describe('Minesweeper Component', () => {
     expect(screen.queryByText('🚩 旗立モード: 左クリックでフラグを立てます')).not.toBeInTheDocument()
   })
 
-  it('renders flag mode hint when flag mode is enabled', () => {
+  it('does not render flag mode hint when flag mode is enabled', () => {
     // Mock the hook to return flag mode enabled
     const mockUseMinesweeper = jest.requireMock('@/hooks/useMinesweeper')
     mockUseMinesweeper.useMinesweeper = jest.fn(() => ({
@@ -112,7 +112,7 @@ describe('Minesweeper Component', () => {
 
     render(<Minesweeper />)
     
-    // 旗立モードのヒントが表示されることを確認
-    expect(screen.getByText('🚩 旗立モード: 左クリックでフラグを立てます')).toBeInTheDocument()
+    // 旗立モードのヒントが表示されないことを確認（削除されたため）
+    expect(screen.queryByText('🚩 旗立モード: 左クリックでフラグを立てます')).not.toBeInTheDocument()
   })
 })
