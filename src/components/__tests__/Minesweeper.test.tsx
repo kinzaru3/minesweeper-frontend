@@ -119,7 +119,7 @@ describe('Minesweeper Component', () => {
   it('renders keyboard shortcuts hint', () => {
     render(<Minesweeper />)
     
-    expect(screen.getByText('キーボードショートカット: スペースキーでリセット、Tabキーで旗立モード切り替え')).toBeInTheDocument()
+    expect(screen.getByText('キーボードショートカット: スペースキーでリセット')).toBeInTheDocument()
   })
 
   it('handles space key for game reset', () => {
@@ -153,7 +153,7 @@ describe('Minesweeper Component', () => {
     expect(mockResetGame).toHaveBeenCalled()
   })
 
-  it('handles tab key for flag mode toggle', () => {
+  it('does not handle tab key for flag mode toggle', () => {
     const mockToggleFlagMode = jest.fn()
     const mockUseMinesweeper = jest.requireMock('@/hooks/useMinesweeper')
     mockUseMinesweeper.useMinesweeper = jest.fn(() => ({
@@ -181,7 +181,8 @@ describe('Minesweeper Component', () => {
     const tabEvent = new KeyboardEvent('keydown', { key: 'Tab' })
     window.dispatchEvent(tabEvent)
     
-    expect(mockToggleFlagMode).toHaveBeenCalled()
+    // Tabキーは無効化されているため、toggleFlagModeは呼ばれない
+    expect(mockToggleFlagMode).not.toHaveBeenCalled()
   })
 
 
