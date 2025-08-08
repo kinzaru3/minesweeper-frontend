@@ -2,8 +2,8 @@ import { Cell, GameState, GameConfig, CellState, CellType } from '@/types/minesw
 
 const DIFFICULTY_CONFIGS = {
   easy: { width: 9, height: 9, mineCount: 10 },
-  medium: { width: 16, height: 16, mineCount: 40 },
-  hard: { width: 16, height: 30, mineCount: 99 },
+  medium: { width: 30, height: 16, mineCount: 40 },
+  hard: { width: 30, height: 16, mineCount: 99 },
 };
 
 export const getDifficultyConfig = (difficulty: 'easy' | 'medium' | 'hard'): GameConfig => {
