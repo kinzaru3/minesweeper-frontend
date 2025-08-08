@@ -115,4 +115,74 @@ describe('Minesweeper Component', () => {
     // 旗立モードのヒントが表示されないことを確認（削除されたため）
     expect(screen.queryByText('🚩 旗立モード: 左クリックでフラグを立てます')).not.toBeInTheDocument()
   })
+
+  it('renders keyboard shortcuts hint', () => {
+    render(<Minesweeper />)
+    
+    expect(screen.getByText('キーボードショートカット: スペースキーでリセット、Tabキーで旗立モード切り替え')).toBeInTheDocument()
+  })
+
+  it('handles space key for game reset', () => {
+    const mockResetGame = jest.fn()
+    const mockUseMinesweeper = jest.requireMock('@/hooks/useMinesweeper')
+    mockUseMinesweeper.useMinesweeper = jest.fn(() => ({
+      gameState: {
+        cells: [],
+        width: 9,
+        height: 9,
+        mineCount: 10,
+        flaggedCount: 0,
+        revealedCount: 0,
+        gameStatus: 'playing',
+        isFirstClick: true,
+        isFlagMode: false,
+      },
+      difficulty: 'easy',
+      resetGame: mockResetGame,
+      toggleFlagMode: jest.fn(),
+      handleCellClick: jest.fn(),
+      handleCellRightClick: jest.fn(),
+    }))
+
+    render(<Minesweeper />)
+    
+    // スペースキーをシミュレート
+    const spaceEvent = new KeyboardEvent('keydown', { key: ' ' })
+    window.dispatchEvent(spaceEvent)
+    
+    expect(mockResetGame).toHaveBeenCalled()
+  })
+
+  it('handles tab key for flag mode toggle', () => {
+    const mockToggleFlagMode = jest.fn()
+    const mockUseMinesweeper = jest.requireMock('@/hooks/useMinesweeper')
+    mockUseMinesweeper.useMinesweeper = jest.fn(() => ({
+      gameState: {
+        cells: [],
+        width: 9,
+        height: 9,
+        mineCount: 10,
+        flaggedCount: 0,
+        revealedCount: 0,
+        gameStatus: 'playing',
+        isFirstClick: true,
+        isFlagMode: false,
+      },
+      difficulty: 'easy',
+      resetGame: jest.fn(),
+      toggleFlagMode: mockToggleFlagMode,
+      handleCellClick: jest.fn(),
+      handleCellRightClick: jest.fn(),
+    }))
+
+    render(<Minesweeper />)
+    
+    // Tabキーをシミュレート
+    const tabEvent = new KeyboardEvent('keydown', { key: 'Tab' })
+    window.dispatchEvent(tabEvent)
+    
+    expect(mockToggleFlagMode).toHaveBeenCalled()
+  })
+
+
 })

@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useCallback } from 'react';
 import { useMinesweeper } from '@/hooks/useMinesweeper';
 import GameBoard from './GameBoard';
 import GameInfo from './GameInfo';
@@ -19,9 +20,40 @@ export default function Minesweeper() {
     resetGame(newDifficulty);
   };
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     resetGame();
-  };
+  }, [resetGame]);
+
+  // キーボードイベント処理
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      // フォーム要素やボタンがフォーカスされている場合は無視
+      if (event.target instanceof HTMLInputElement || 
+          event.target instanceof HTMLTextAreaElement || 
+          event.target instanceof HTMLButtonElement) {
+        return;
+      }
+
+      switch (event.key) {
+        case ' ':
+          // スペースキーでゲームリセット
+          event.preventDefault();
+          handleReset();
+          break;
+        case 'Tab':
+          // Tabキーで旗立モード切り替え
+          event.preventDefault();
+          toggleFlagMode();
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleReset, toggleFlagMode]);
 
   return (
     <div className={styles.container}>
@@ -64,6 +96,9 @@ export default function Minesweeper() {
           </div>
 
           <div className={styles.footer}>
+            <p className={styles.keyboardHints}>
+              キーボードショートカット: スペースキーでリセット、Tabキーで旗立モード切り替え
+            </p>
           </div>
         </div>
       </div>
