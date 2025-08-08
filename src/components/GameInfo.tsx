@@ -10,8 +10,10 @@ interface GameInfoProps {
   difficulty: GameDifficulty;
   boardWidth: number;
   boardHeight: number;
+  isFlagMode: boolean;
   onDifficultyChange: (difficulty: GameDifficulty) => void;
   onReset: () => void;
+  onToggleFlagMode: () => void;
 }
 
 export default function GameInfo({
@@ -21,8 +23,10 @@ export default function GameInfo({
   difficulty,
   boardWidth,
   boardHeight,
+  isFlagMode,
   onDifficultyChange,
   onReset,
+  onToggleFlagMode,
 }: GameInfoProps) {
   const getStatusMessage = () => {
     switch (gameStatus) {
@@ -108,6 +112,15 @@ export default function GameInfo({
               上級
             </button>
           </div>
+          
+          <button
+            onClick={onToggleFlagMode}
+            className={`${styles.flagModeButton} ${
+              isFlagMode ? styles.active : styles.inactive
+            }`}
+          >
+            🚩 旗立モード
+          </button>
           
           <button
             onClick={onReset}
