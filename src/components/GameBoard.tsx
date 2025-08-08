@@ -2,6 +2,7 @@
 
 import { Cell as CellType } from '@/types/minesweeper';
 import Cell from './Cell';
+import styles from './GameBoard.module.scss';
 
 interface GameBoardProps {
   board: CellType[][];
@@ -11,9 +12,9 @@ interface GameBoardProps {
 
 export default function GameBoard({ board, onCellClick, onCellRightClick }: GameBoardProps) {
   return (
-    <div className="inline-block border-2 border-gray-500 bg-gray-700 p-1">
+    <div className={styles.gameBoard}>
       <div 
-        className="grid gap-0"
+        className={styles.grid}
         style={{
           gridTemplateColumns: `repeat(${board[0]?.length || 0}, 1fr)`,
         }}

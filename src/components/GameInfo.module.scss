@@ -1,0 +1,139 @@
+.gameInfo {
+  background: linear-gradient(to right, #111827, #1f2937);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid #374151;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+
+  @media (min-width: 1024px) {
+    flex-direction: row;
+  }
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.statItem {
+  text-align: center;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 1.875rem;
+  font-weight: bold;
+  margin-top: 0.25rem;
+
+  &.mines {
+    color: #f87171;
+  }
+
+  &.flags {
+    color: #facc15;
+  }
+
+  &.size {
+    font-size: 1.25rem;
+    color: #60a5fa;
+  }
+}
+
+.gameStatus {
+  text-align: center;
+}
+
+.statusMessage {
+  font-size: 1.25rem;
+  font-weight: bold;
+  background-color: #1f2937;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #4b5563;
+
+  &.playing {
+    color: #60a5fa;
+  }
+
+  &.won {
+    color: #4ade80;
+  }
+
+  &.lost {
+    color: #f87171;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+  }
+}
+
+.difficultyButtons {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.difficultyButton {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  border: 1px solid #4b5563;
+
+  &.active {
+    background-color: #2563eb;
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
+
+  &.inactive {
+    background-color: #1f2937;
+    color: #d1d5db;
+
+    &:hover {
+      background-color: #374151;
+      border-color: #6b7280;
+    }
+  }
+}
+
+.resetButton {
+  padding: 0.5rem 1.5rem;
+  background: linear-gradient(to right, #16a34a, #15803d);
+  color: white;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    background: linear-gradient(to right, #15803d, #166534);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+  }
+}
