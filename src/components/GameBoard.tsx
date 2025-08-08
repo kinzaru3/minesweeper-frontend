@@ -8,10 +8,9 @@ interface GameBoardProps {
   board: CellType[][];
   onCellClick: (x: number, y: number) => void;
   onCellRightClick: (x: number, y: number) => void;
-  onCellDoubleClick: (x: number, y: number) => void;
 }
 
-export default function GameBoard({ board, onCellClick, onCellRightClick, onCellDoubleClick }: GameBoardProps) {
+export default function GameBoard({ board, onCellClick, onCellRightClick }: GameBoardProps) {
   return (
     <div className={styles.gameBoard}>
       <div 
@@ -27,7 +26,6 @@ export default function GameBoard({ board, onCellClick, onCellRightClick, onCell
               cell={cell}
               onClick={onCellClick}
               onRightClick={onCellRightClick}
-              onDoubleClick={onCellDoubleClick}
             />
           ))
         )}

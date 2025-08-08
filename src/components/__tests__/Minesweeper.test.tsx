@@ -64,7 +64,7 @@ describe('Minesweeper Component', () => {
   it('renders the game subtitle', () => {
     render(<Minesweeper />)
     
-    expect(screen.getByText('左クリックでセルを開く、右クリックでフラグを立てる、ダブルクリックでオートオープン')).toBeInTheDocument()
+    expect(screen.getByText('左クリックでセルを開く、右クリックでフラグを立てる')).toBeInTheDocument()
   })
 
   it('renders game board and game info components', () => {

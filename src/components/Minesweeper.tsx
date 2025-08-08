@@ -15,7 +15,6 @@ export default function Minesweeper() {
     toggleFlagMode,
     handleCellClick,
     handleCellRightClick,
-    handleCellDoubleClick,
   } = useMinesweeper();
 
   const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
@@ -58,7 +57,7 @@ export default function Minesweeper() {
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <h1 className={styles.title}>マインスイーパー</h1>
-          <p className={styles.subtitle}>左クリックでセルを開く、右クリックでフラグを立てる、ダブルクリックでオートオープン</p>
+          <p className={styles.subtitle}>左クリックでセルを開く、右クリックでフラグを立てる</p>
         </div>
       </div>
 
@@ -90,7 +89,6 @@ export default function Minesweeper() {
               board={gameState.cells}
               onCellClick={handleCellClick}
               onCellRightClick={handleCellRightClick}
-              onCellDoubleClick={handleCellDoubleClick}
             />
           </div>
 

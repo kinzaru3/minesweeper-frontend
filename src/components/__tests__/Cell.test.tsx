@@ -26,7 +26,6 @@ jest.mock('../Cell.module.scss', () => ({
 describe('Cell Component', () => {
   const mockOnClick = jest.fn()
   const mockOnRightClick = jest.fn()
-  const mockOnDoubleClick = jest.fn()
 
   const createCell = (overrides: Partial<CellType> = {}): CellType => ({
     id: '0-0',
@@ -50,7 +49,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -66,7 +64,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -85,7 +82,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -104,7 +100,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -119,7 +114,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -136,7 +130,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -153,7 +146,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -170,7 +162,6 @@ describe('Cell Component', () => {
         cell={cell}
         onClick={mockOnClick}
         onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
       />
     )
 
@@ -186,61 +177,5 @@ describe('Cell Component', () => {
     expect(preventDefaultSpy).toHaveBeenCalled()
   })
 
-  it('calls onDoubleClick when revealed number cell is double-clicked', () => {
-    const cell = createCell({ 
-      state: 'revealed', 
-      type: 'number',
-      mineCount: 3
-    })
-    render(
-      <Cell
-        cell={cell}
-        onClick={mockOnClick}
-        onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
-      />
-    )
 
-    const cellElement = screen.getByRole('button')
-    fireEvent.doubleClick(cellElement)
-
-    expect(mockOnDoubleClick).toHaveBeenCalledWith(0, 0)
-  })
-
-  it('does not call onDoubleClick when hidden cell is double-clicked', () => {
-    const cell = createCell()
-    render(
-      <Cell
-        cell={cell}
-        onClick={mockOnClick}
-        onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
-      />
-    )
-
-    const cellElement = screen.getByRole('button')
-    fireEvent.doubleClick(cellElement)
-
-    expect(mockOnDoubleClick).not.toHaveBeenCalled()
-  })
-
-  it('does not call onDoubleClick when non-number cell is double-clicked', () => {
-    const cell = createCell({ 
-      state: 'revealed', 
-      type: 'empty'
-    })
-    render(
-      <Cell
-        cell={cell}
-        onClick={mockOnClick}
-        onRightClick={mockOnRightClick}
-        onDoubleClick={mockOnDoubleClick}
-      />
-    )
-
-    const cellElement = screen.getByRole('button')
-    fireEvent.doubleClick(cellElement)
-
-    expect(mockOnDoubleClick).not.toHaveBeenCalled()
-  })
 })

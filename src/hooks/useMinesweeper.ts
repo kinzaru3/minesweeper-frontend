@@ -159,49 +159,7 @@ export function useMinesweeper() {
     });
   }, [gameState.gameStatus]);
 
-  const handleCellDoubleClick = useCallback((x: number, y: number) => {
-    if (gameState.gameStatus !== 'playing') return;
 
-    setGameState(prevState => {
-      const cell = prevState.cells[y][x];
-      
-      // 数字のセルでない場合は何もしない
-      if (cell.type !== 'number' || cell.state !== 'revealed') {
-        return prevState;
-      }
-
-      // オートオープン機能を実行
-      let newCells = autoRevealCell(prevState.cells, x, y);
-      
-      // ゲーム状態をチェック
-      const newGameStatus = checkGameStatus(newCells, prevState.mineCount);
-      
-      // ゲーム終了時は全ての地雷を表示
-      if (newGameStatus === 'lost') {
-        newCells = revealAllMines(newCells);
-      }
-
-      // ゲーム終了時はタイマーを停止
-      if (newGameStatus === 'won' || newGameStatus === 'lost') {
-        setIsTimerRunning(false);
-        if (timerRef.current) {
-          clearInterval(timerRef.current);
-          timerRef.current = null;
-        }
-      }
-
-      // 統計を更新
-      const stats = getGameStats(newCells);
-
-      return {
-        ...prevState,
-        cells: newCells,
-        gameStatus: newGameStatus,
-        revealedCount: stats.revealedCount,
-        flaggedCount: stats.flaggedCount,
-      };
-    });
-  }, [gameState.gameStatus, gameState.mineCount, isTimerRunning]);
 
   // コンポーネントのクリーンアップ時にタイマーを停止
   useEffect(() => {
@@ -221,6 +179,5 @@ export function useMinesweeper() {
     toggleFlagMode,
     handleCellClick,
     handleCellRightClick,
-    handleCellDoubleClick,
   };
 }
