@@ -144,4 +144,25 @@ describe('GameInfo Component', () => {
     const flagModeButton = screen.getByText('🚩 旗立モード')
     expect(flagModeButton).toHaveClass('inactive')
   })
+
+  it('renders board size with consistent font size', () => {
+    render(<GameInfo {...defaultProps} boardWidth={16} boardHeight={16} />)
+
+    const boardSizeElement = screen.getByText('16×16')
+    const statValueElement = boardSizeElement.closest('[class*="statValue"]')
+    
+    // Check that the board size element has the size class
+    expect(statValueElement).toHaveClass('size')
+  })
+
+  it('renders different board sizes correctly', () => {
+    const { rerender } = render(<GameInfo {...defaultProps} boardWidth={9} boardHeight={9} />)
+    expect(screen.getByText('9×9')).toBeInTheDocument()
+
+    rerender(<GameInfo {...defaultProps} boardWidth={16} boardHeight={16} />)
+    expect(screen.getByText('16×16')).toBeInTheDocument()
+
+    rerender(<GameInfo {...defaultProps} boardWidth={30} boardHeight={16} />)
+    expect(screen.getByText('30×16')).toBeInTheDocument()
+  })
 })
