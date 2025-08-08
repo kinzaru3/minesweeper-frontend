@@ -33,7 +33,8 @@ jest.mock('@/utils/minesweeper', () => ({
   placeMines: jest.fn((board) => board),
   revealCell: jest.fn((board) => board),
   toggleFlag: jest.fn((board, x, y) => {
-    const newBoard = board.map(row => row.map(cell => ({ ...cell })))
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const newBoard = (board as any).map((row: any) => row.map((cell: any) => ({ ...cell })))
     newBoard[y][x].state = newBoard[y][x].state === 'flagged' ? 'hidden' : 'flagged'
     return newBoard
   }),
