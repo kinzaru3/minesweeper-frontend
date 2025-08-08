@@ -24,14 +24,17 @@ export default function Minesweeper() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.content}>
-        <div className={styles.header}>
+      {/* 固定ヘッダー */}
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
           <h1 className={styles.title}>マインスイーパー</h1>
           <p className={styles.subtitle}>左クリックでセルを開く、右クリックでフラグを立てる</p>
         </div>
+      </div>
 
-        {/* ゲーム情報パネル - 上部に配置 */}
-        <div className={styles.menuContainer}>
+      {/* 固定メニュー */}
+      <div className={styles.menuContainer}>
+        <div className={styles.menuContent}>
           <GameInfo
             mineCount={gameState.mineCount}
             flaggedCount={gameState.flaggedCount}
@@ -43,18 +46,23 @@ export default function Minesweeper() {
             onReset={handleReset}
           />
         </div>
+      </div>
 
-        {/* ゲームボード - 中央に配置 */}
-        <div className={styles.gameBoardContainer}>
-          <GameBoard
-            board={gameState.cells}
-            onCellClick={handleCellClick}
-            onCellRightClick={handleCellRightClick}
-          />
-        </div>
+      {/* メインコンテンツ */}
+      <div className={styles.mainContent}>
+        <div className={styles.content}>
+          {/* ゲームボード - 中央に配置 */}
+          <div className={styles.gameBoardContainer}>
+            <GameBoard
+              board={gameState.cells}
+              onCellClick={handleCellClick}
+              onCellRightClick={handleCellRightClick}
+            />
+          </div>
 
-        <div className={styles.footer}>
-          <p>💡 ヒント: 数字は周囲の地雷の数を示しています</p>
+          <div className={styles.footer}>
+            <p>💡 ヒント: 数字は周囲の地雷の数を示しています</p>
+          </div>
         </div>
       </div>
     </div>
