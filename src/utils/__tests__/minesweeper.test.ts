@@ -120,6 +120,54 @@ describe('Minesweeper Utils', () => {
       // Should not crash and should handle edge case correctly
       expect(result).toBeDefined();
     });
+
+    it('opens multiple neighbors when flag count matches', () => {
+      const board = createEmptyBoard(3, 3);
+      
+      // Set up a number cell with 2 mines
+      board[1][1].type = 'number';
+      board[1][1].mineCount = 2;
+      board[1][1].state = 'revealed';
+      
+      // Set up 2 flags
+      board[0][0].state = 'flagged';
+      board[0][2].state = 'flagged';
+      
+      // Set up hidden cells
+      board[2][0].state = 'hidden';
+      board[2][2].state = 'hidden';
+      
+      const result = autoRevealCell(board, 1, 1);
+      
+      // Both hidden cells should be revealed
+      expect(result[2][0].state).toBe('revealed');
+      expect(result[2][2].state).toBe('revealed');
+    });
+
+    it('handles empty cells with chain reaction', () => {
+      const board = createEmptyBoard(3, 3);
+      
+      // Set up a number cell with 1 mine
+      board[1][1].type = 'number';
+      board[1][1].mineCount = 1;
+      board[1][1].state = 'revealed';
+      
+      // Set up a flag
+      board[0][0].state = 'flagged';
+      
+      // Set up an empty cell that will be revealed
+      board[0][2].type = 'empty';
+      board[0][2].state = 'hidden';
+      
+      // Set up another hidden cell that should be revealed by chain reaction
+      board[1][2].state = 'hidden';
+      
+      const result = autoRevealCell(board, 1, 1);
+      
+      // Both cells should be revealed due to chain reaction
+      expect(result[0][2].state).toBe('revealed');
+      expect(result[1][2].state).toBe('revealed');
+    });
   });
 
   describe('toggleFlag', () => {
