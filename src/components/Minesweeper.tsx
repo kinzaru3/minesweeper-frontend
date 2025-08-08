@@ -64,9 +64,6 @@ export default function Minesweeper() {
           </div>
 
           <div className={styles.footer}>
-            {gameState.isFlagMode && (
-              <p className={styles.flagModeHint}>🚩 旗立モード: 左クリックでフラグを立てます</p>
-            )}
           </div>
         </div>
       </div>
