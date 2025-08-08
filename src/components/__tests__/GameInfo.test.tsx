@@ -36,6 +36,7 @@ describe('GameInfo Component', () => {
     boardWidth: 9,
     boardHeight: 9,
     isFlagMode: false,
+    elapsedTime: 0,
     onDifficultyChange: jest.fn(),
     onReset: jest.fn(),
     onToggleFlagMode: jest.fn(),
@@ -54,6 +55,8 @@ describe('GameInfo Component', () => {
     expect(screen.getByText('3')).toBeInTheDocument()
     expect(screen.getByText('ボードサイズ')).toBeInTheDocument()
     expect(screen.getByText('9×9')).toBeInTheDocument()
+    expect(screen.getByText('経過時間')).toBeInTheDocument()
+    expect(screen.getByText('0:00')).toBeInTheDocument()
   })
 
   it('renders game status correctly', () => {
