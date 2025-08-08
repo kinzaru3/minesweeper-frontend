@@ -204,3 +204,75 @@ export const revealAllMines = (board: Cell[][]): Cell[][] => {
     }))
   );
 };
+
+export const autoRevealCell = (board: Cell[][], x: number, y: number): Cell[][] => {
+  const height = board.length;
+  const width = board[0].length;
+  const newBoard = board.map(row => row.map(cell => ({ ...cell })));
+  const cell = newBoard[y][x];
+  
+  // 数字のセルでない場合は何もしない
+  if (cell.type !== 'number' || cell.state !== 'revealed') {
+    return newBoard;
+  }
+  
+  // 周囲のフラグ数を数える
+  let flagCount = 0;
+  const neighbors: [number, number][] = [];
+  
+  for (let dy = -1; dy <= 1; dy++) {
+    for (let dx = -1; dx <= 1; dx++) {
+      if (dx === 0 && dy === 0) continue;
+      
+      const newX = x + dx;
+      const newY = y + dy;
+      
+      if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+        const neighbor = newBoard[newY][newX];
+        if (neighbor.state === 'flagged') {
+          flagCount++;
+        } else if (neighbor.state === 'hidden') {
+          neighbors.push([newX, newY]);
+        }
+      }
+    }
+  }
+  
+  // フラグ数がセルの数字と一致する場合、周囲の隠れたセルを開く
+  if (flagCount === cell.mineCount) {
+    const stack: [number, number][] = [...neighbors];
+    
+    while (stack.length > 0) {
+      const [currentX, currentY] = stack.pop()!;
+      const currentCell = newBoard[currentY][currentX];
+      
+      if (currentCell.state === 'revealed' || currentCell.state === 'flagged') {
+        continue;
+      }
+      
+      currentCell.state = 'revealed';
+      
+      if (currentCell.isMine) {
+        continue;
+      }
+      
+      // 空のセルの場合、周囲のセルも開く
+      if (currentCell.type === 'empty') {
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const newX = currentX + dx;
+            const newY = currentY + dy;
+            if (newX >= 0 && newX < width && newY >= 0 && newY < height) {
+              const neighbor = newBoard[newY][newX];
+              if (neighbor.state === 'hidden') {
+                stack.push([newX, newY]);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  return newBoard;
+};

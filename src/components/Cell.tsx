@@ -8,9 +8,10 @@ interface CellProps {
   cell: CellType;
   onClick: (x: number, y: number) => void;
   onRightClick: (x: number, y: number) => void;
+  onDoubleClick: (x: number, y: number) => void;
 }
 
-export default function Cell({ cell, onClick, onRightClick }: CellProps) {
+export default function Cell({ cell, onClick, onRightClick, onDoubleClick }: CellProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   const handleClick = () => {
@@ -22,6 +23,12 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
   const handleRightClick = (e: React.MouseEvent) => {
     e.preventDefault();
     onRightClick(cell.x, cell.y);
+  };
+
+  const handleDoubleClick = () => {
+    if (cell.state === 'revealed' && cell.type === 'number') {
+      onDoubleClick(cell.x, cell.y);
+    }
   };
 
   const handleMouseDown = () => {
@@ -93,10 +100,11 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
       className={getCellClasses()}
       onClick={handleClick}
       onContextMenu={handleRightClick}
+      onDoubleClick={handleDoubleClick}
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
-      disabled={cell.state === 'revealed'}
+      disabled={cell.state === 'revealed' && cell.type !== 'number'}
     >
       {getCellContent()}
     </button>
