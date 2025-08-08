@@ -120,17 +120,34 @@ describe('useMinesweeper Hook', () => {
     expect(revealCell).toHaveBeenCalled()
   })
 
-  it('handles cell click in flag mode', () => {
+  it('handles first cell click in flag mode (should open cell)', () => {
     const { result } = renderHook(() => useMinesweeper())
 
-    // Flag mode is already enabled by default
+    // Flag mode is enabled by default, but first click should open cell
     act(() => {
       result.current.handleCellClick(0, 0)
     })
 
+    expect(placeMines).toHaveBeenCalled()
+    expect(revealCell).toHaveBeenCalled()
+    expect(toggleFlag).not.toHaveBeenCalled()
+  })
+
+  it('handles second cell click in flag mode (should toggle flag)', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    // First click should open cell
+    act(() => {
+      result.current.handleCellClick(0, 0)
+    })
+
+    // Second click should toggle flag
+    act(() => {
+      result.current.handleCellClick(1, 1)
+    })
+
     expect(toggleFlag).toHaveBeenCalled()
-    expect(placeMines).not.toHaveBeenCalled()
-    expect(revealCell).not.toHaveBeenCalled()
+    expect(placeMines).toHaveBeenCalledTimes(1) // Only called once for first click
   })
 
   it('handles cell right click', () => {
