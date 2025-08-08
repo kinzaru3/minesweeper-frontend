@@ -40,11 +40,6 @@ export default function Minesweeper() {
           event.preventDefault();
           handleReset();
           break;
-        case 'Tab':
-          // Tabキーで旗立モード切り替え
-          event.preventDefault();
-          toggleFlagMode();
-          break;
       }
     };
 
@@ -53,7 +48,7 @@ export default function Minesweeper() {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [handleReset, toggleFlagMode]);
+  }, [handleReset]);
 
   return (
     <div className={styles.container}>
@@ -97,7 +92,7 @@ export default function Minesweeper() {
 
           <div className={styles.footer}>
             <p className={styles.keyboardHints}>
-              キーボードショートカット: スペースキーでリセット、Tabキーで旗立モード切り替え
+              キーボードショートカット: スペースキーでリセット
             </p>
           </div>
         </div>
