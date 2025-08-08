@@ -102,12 +102,14 @@ export function useMinesweeper() {
             flaggedCount: stats.flaggedCount,
           };
         } else {
-          // 通常モードの場合、セルを開く
-          newCells = revealCell(newCells, x, y);
-          
-          // オートオープン機能：数字のセルをクリックした場合
+          // 通常モードの場合
           const clickedCell = newCells[y][x];
-          if (clickedCell.type === 'number' && clickedCell.state === 'revealed') {
+          
+          if (clickedCell.state === 'hidden') {
+            // 隠れたセルを開く
+            newCells = revealCell(newCells, x, y);
+          } else if (clickedCell.state === 'revealed' && clickedCell.type === 'number') {
+            // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
             newCells = autoRevealCell(newCells, x, y);
           }
         }

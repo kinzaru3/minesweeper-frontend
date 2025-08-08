@@ -14,7 +14,7 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   const handleClick = () => {
-    if (cell.state === 'hidden') {
+    if (cell.state === 'hidden' || (cell.state === 'revealed' && cell.type === 'number')) {
       onClick(cell.x, cell.y);
     }
   };
