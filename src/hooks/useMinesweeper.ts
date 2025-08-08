@@ -11,6 +11,7 @@ import {
   checkGameStatus,
   getGameStats,
   revealAllMines,
+  autoRevealCell,
 } from '@/utils/minesweeper';
 
 export function useMinesweeper() {
@@ -92,8 +93,17 @@ export function useMinesweeper() {
       } else {
         // 2回目以降のクリックの場合
         if (prevState.isFlagMode) {
-          // 旗立モードの場合、フラグを切り替える
-          newCells = toggleFlag(newCells, x, y);
+          // 旗立モードの場合
+          const clickedCell = newCells[y][x];
+          
+          if (clickedCell.state === 'hidden') {
+            // 隠れたセルにフラグを立てる
+            newCells = toggleFlag(newCells, x, y);
+          } else if (clickedCell.state === 'revealed' && clickedCell.type === 'number') {
+            // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
+            newCells = autoRevealCell(newCells, x, y);
+          }
+          
           const stats = getGameStats(newCells);
           return {
             ...prevState,
@@ -101,8 +111,16 @@ export function useMinesweeper() {
             flaggedCount: stats.flaggedCount,
           };
         } else {
-          // 通常モードの場合、セルを開く
-          newCells = revealCell(newCells, x, y);
+          // 通常モードの場合
+          const clickedCell = newCells[y][x];
+          
+          if (clickedCell.state === 'hidden') {
+            // 隠れたセルを開く
+            newCells = revealCell(newCells, x, y);
+          } else if (clickedCell.state === 'revealed' && clickedCell.type === 'number') {
+            // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
+            newCells = autoRevealCell(newCells, x, y);
+          }
         }
       }
 
@@ -151,6 +169,8 @@ export function useMinesweeper() {
       };
     });
   }, [gameState.gameStatus]);
+
+
 
   // コンポーネントのクリーンアップ時にタイマーを停止
   useEffect(() => {

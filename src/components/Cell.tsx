@@ -14,7 +14,7 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
   const [isPressed, setIsPressed] = useState(false);
 
   const handleClick = () => {
-    if (cell.state === 'hidden') {
+    if (cell.state === 'hidden' || (cell.state === 'revealed' && cell.type === 'number')) {
       onClick(cell.x, cell.y);
     }
   };
@@ -23,6 +23,8 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
     e.preventDefault();
     onRightClick(cell.x, cell.y);
   };
+
+
 
   const handleMouseDown = () => {
     if (cell.state === 'hidden') {
@@ -93,10 +95,11 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
       className={getCellClasses()}
       onClick={handleClick}
       onContextMenu={handleRightClick}
+
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseLeave}
-      disabled={cell.state === 'revealed'}
+      disabled={cell.state === 'revealed' && cell.type !== 'number'}
     >
       {getCellContent()}
     </button>

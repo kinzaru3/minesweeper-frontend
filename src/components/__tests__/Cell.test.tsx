@@ -176,4 +176,6 @@ describe('Cell Component', () => {
 
     expect(preventDefaultSpy).toHaveBeenCalled()
   })
+
+
 })

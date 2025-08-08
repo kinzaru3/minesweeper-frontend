@@ -17,6 +17,14 @@ export default function Minesweeper() {
     handleCellRightClick,
   } = useMinesweeper();
 
+  const handleCellClickWithLog = (x: number, y: number) => {
+    handleCellClick(x, y);
+  };
+
+  const handleCellRightClickWithLog = (x: number, y: number) => {
+    handleCellRightClick(x, y);
+  };
+
   const handleDifficultyChange = (newDifficulty: 'easy' | 'medium' | 'hard') => {
     resetGame(newDifficulty);
   };
@@ -87,8 +95,8 @@ export default function Minesweeper() {
           <div className={styles.gameBoardContainer}>
             <GameBoard
               board={gameState.cells}
-              onCellClick={handleCellClick}
-              onCellRightClick={handleCellRightClick}
+              onCellClick={handleCellClickWithLog}
+              onCellRightClick={handleCellRightClickWithLog}
             />
           </div>
 
