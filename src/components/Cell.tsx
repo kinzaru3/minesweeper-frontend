@@ -86,7 +86,7 @@ export default function Cell({ cell, onClick, onRightClick }: CellProps) {
     
     if (cell.state === 'revealed') {
       if (cell.isMine) {
-        return `${baseClasses} bg-red-600 text-white`;
+        return `${baseClasses} bg-orange-500 text-white`;
       }
       
       if (cell.type === 'empty') {
