@@ -46,27 +46,27 @@ export default function GameInfo({
   };
 
   return (
-    <div className="bg-gray-800 text-white p-4 rounded-lg border border-gray-600">
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+    <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white p-6 rounded-xl border border-gray-700 shadow-2xl">
+      <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
         {/* ゲーム統計 */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-8">
           <div className="text-center">
-            <div className="text-sm text-gray-300">残り地雷</div>
-            <div className="text-2xl font-bold text-red-400">
+            <div className="text-xs text-gray-400 uppercase tracking-wider font-medium">残り地雷</div>
+            <div className="text-3xl font-bold text-red-400 mt-1">
               {mineCount - flaggedCount}
             </div>
           </div>
           
           <div className="text-center">
-            <div className="text-sm text-gray-300">フラグ</div>
-            <div className="text-2xl font-bold text-yellow-400">
+            <div className="text-xs text-gray-400 uppercase tracking-wider font-medium">フラグ</div>
+            <div className="text-3xl font-bold text-yellow-400 mt-1">
               {flaggedCount}
             </div>
           </div>
 
           <div className="text-center">
-            <div className="text-sm text-gray-300">ボードサイズ</div>
-            <div className="text-lg font-bold text-blue-400">
+            <div className="text-xs text-gray-400 uppercase tracking-wider font-medium">ボードサイズ</div>
+            <div className="text-xl font-bold text-blue-400 mt-1">
               {boardWidth}×{boardHeight}
             </div>
           </div>
@@ -74,40 +74,40 @@ export default function GameInfo({
 
         {/* ゲーム状態 */}
         <div className="text-center">
-          <div className={`text-lg font-bold ${getStatusColor()}`}>
+          <div className={`text-xl font-bold ${getStatusColor()} bg-gray-800 px-4 py-2 rounded-lg border border-gray-600`}>
             {getStatusMessage()}
           </div>
         </div>
 
         {/* 難易度選択とリセットボタン */}
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex gap-1">
             <button
               onClick={() => onDifficultyChange('easy')}
-              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 difficulty === 'easy'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                  ? 'bg-blue-600 text-white shadow-lg transform scale-105'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600 hover:border-gray-500'
               }`}
             >
               初級
             </button>
             <button
               onClick={() => onDifficultyChange('medium')}
-              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 difficulty === 'medium'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                  ? 'bg-blue-600 text-white shadow-lg transform scale-105'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600 hover:border-gray-500'
               }`}
             >
               中級
             </button>
             <button
               onClick={() => onDifficultyChange('hard')}
-              className={`px-3 py-1 rounded text-sm font-medium transition-colors ${
+              className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 difficulty === 'hard'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-700 text-gray-300 hover:bg-gray-600 border border-gray-600'
+                  ? 'bg-blue-600 text-white shadow-lg transform scale-105'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-600 hover:border-gray-500'
               }`}
             >
               上級
@@ -116,7 +116,7 @@ export default function GameInfo({
           
           <button
             onClick={onReset}
-            className="px-4 py-1 bg-green-600 hover:bg-green-700 text-white font-medium rounded transition-colors"
+            className="px-6 py-2 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             新しいゲーム
           </button>
