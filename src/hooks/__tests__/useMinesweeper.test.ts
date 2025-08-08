@@ -12,7 +12,7 @@ import {
 
 // Mock the utils
 jest.mock('@/utils/minesweeper', () => ({
-  getDifficultyConfig: jest.fn(() => ({ width: 3, height: 3, mineCount: 2 })),
+  getDifficultyConfig: jest.fn(() => ({ width: 30, height: 16, mineCount: 99 })),
   createEmptyBoard: jest.fn(() => [
     [
       { id: '0-0', x: 0, y: 0, state: 'hidden', type: 'empty', mineCount: 0, isMine: false },
@@ -53,16 +53,16 @@ describe('useMinesweeper Hook', () => {
 
     expect(result.current.gameState).toEqual({
       cells: expect.any(Array),
-      width: 3,
-      height: 3,
-      mineCount: 2,
+      width: 30,
+      height: 16,
+      mineCount: 99,
       flaggedCount: 0,
       revealedCount: 0,
       gameStatus: 'playing',
       isFirstClick: true,
-      isFlagMode: false,
+      isFlagMode: true,
     })
-    expect(result.current.difficulty).toBe('easy')
+    expect(result.current.difficulty).toBe('hard')
   })
 
   it('resets game correctly', () => {
@@ -73,7 +73,7 @@ describe('useMinesweeper Hook', () => {
     })
 
     expect(result.current.gameState.isFirstClick).toBe(true)
-    expect(result.current.gameState.isFlagMode).toBe(false)
+    expect(result.current.gameState.isFlagMode).toBe(true)
   })
 
   it('resets game with new difficulty', () => {
@@ -89,12 +89,6 @@ describe('useMinesweeper Hook', () => {
   it('toggles flag mode correctly', () => {
     const { result } = renderHook(() => useMinesweeper())
 
-    expect(result.current.gameState.isFlagMode).toBe(false)
-
-    act(() => {
-      result.current.toggleFlagMode()
-    })
-
     expect(result.current.gameState.isFlagMode).toBe(true)
 
     act(() => {
@@ -102,10 +96,21 @@ describe('useMinesweeper Hook', () => {
     })
 
     expect(result.current.gameState.isFlagMode).toBe(false)
+
+    act(() => {
+      result.current.toggleFlagMode()
+    })
+
+    expect(result.current.gameState.isFlagMode).toBe(true)
   })
 
   it('handles cell click in normal mode', () => {
     const { result } = renderHook(() => useMinesweeper())
+
+    // Disable flag mode first
+    act(() => {
+      result.current.toggleFlagMode()
+    })
 
     act(() => {
       result.current.handleCellClick(0, 0)
@@ -118,11 +123,7 @@ describe('useMinesweeper Hook', () => {
   it('handles cell click in flag mode', () => {
     const { result } = renderHook(() => useMinesweeper())
 
-    // Enable flag mode
-    act(() => {
-      result.current.toggleFlagMode()
-    })
-
+    // Flag mode is already enabled by default
     act(() => {
       result.current.handleCellClick(0, 0)
     })
@@ -144,6 +145,11 @@ describe('useMinesweeper Hook', () => {
 
   it('does not handle clicks when game is not playing', () => {
     const { result } = renderHook(() => useMinesweeper())
+
+    // Disable flag mode first to test normal mode
+    act(() => {
+      result.current.toggleFlagMode()
+    })
 
     // Mock game status as 'won' for the next call
     ;(checkGameStatus as jest.Mock).mockReturnValueOnce('won')

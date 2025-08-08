@@ -14,9 +14,9 @@ import {
 } from '@/utils/minesweeper';
 
 export function useMinesweeper() {
-  const [difficulty, setDifficulty] = useState<GameDifficulty>('easy');
+  const [difficulty, setDifficulty] = useState<GameDifficulty>('hard');
   const [gameState, setGameState] = useState<GameState>(() => {
-    const config = getDifficultyConfig('easy');
+    const config = getDifficultyConfig('hard');
     return {
       cells: createEmptyBoard(config.width, config.height),
       width: config.width,
@@ -26,7 +26,7 @@ export function useMinesweeper() {
       revealedCount: 0,
       gameStatus: 'playing',
       isFirstClick: true,
-      isFlagMode: false,
+      isFlagMode: true,
     };
   });
 
@@ -43,7 +43,7 @@ export function useMinesweeper() {
       revealedCount: 0,
       gameStatus: 'playing',
       isFirstClick: true,
-      isFlagMode: false,
+      isFlagMode: true,
     });
     
     if (newDifficulty) {
