@@ -36,6 +36,8 @@ export default function Minesweeper() {
             flaggedCount={gameState.flaggedCount}
             gameStatus={gameState.gameStatus}
             difficulty={difficulty}
+            boardWidth={gameState.width}
+            boardHeight={gameState.height}
             onDifficultyChange={handleDifficultyChange}
             onReset={handleReset}
           />

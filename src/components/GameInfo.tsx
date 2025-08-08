@@ -7,6 +7,8 @@ interface GameInfoProps {
   flaggedCount: number;
   gameStatus: 'playing' | 'won' | 'lost';
   difficulty: GameDifficulty;
+  boardWidth: number;
+  boardHeight: number;
   onDifficultyChange: (difficulty: GameDifficulty) => void;
   onReset: () => void;
 }
@@ -16,6 +18,8 @@ export default function GameInfo({
   flaggedCount,
   gameStatus,
   difficulty,
+  boardWidth,
+  boardHeight,
   onDifficultyChange,
   onReset,
 }: GameInfoProps) {
@@ -57,6 +61,13 @@ export default function GameInfo({
             <div className="text-sm text-gray-300">フラグ</div>
             <div className="text-2xl font-bold text-yellow-500">
               {flaggedCount}
+            </div>
+          </div>
+
+          <div className="text-center">
+            <div className="text-sm text-gray-300">ボードサイズ</div>
+            <div className="text-lg font-bold text-blue-500">
+              {boardWidth}×{boardHeight}
             </div>
           </div>
         </div>
