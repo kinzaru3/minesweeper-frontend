@@ -319,4 +319,88 @@ describe('useMinesweeper Hook', () => {
     // revealAllMines should be called
     expect(revealAllMines).toHaveBeenCalled()
   })
+
+  it('flag mode prevents opening non-mine cells after first click', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    // Mock the board to have no mines
+    const mockBoard = [
+      [
+        { id: '0-0', x: 0, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-0', x: 1, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-0', x: 2, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+      [
+        { id: '0-1', x: 0, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-1', x: 1, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-1', x: 2, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+      [
+        { id: '0-2', x: 0, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-2', x: 1, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-2', x: 2, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+    ]
+
+    // Mock the game state
+    act(() => {
+      result.current.gameState.cells = mockBoard
+      result.current.gameState.isFirstClick = false
+      result.current.gameState.isFlagMode = true
+    })
+
+    // Click on a non-mine cell in flag mode (should toggle flag, not open cell)
+    act(() => {
+      result.current.handleCellClick(1, 1)
+    })
+
+    // In flag mode, clicking on non-mine cells should toggle flags, not open cells
+    expect(toggleFlag).toHaveBeenCalled()
+    expect(revealCell).not.toHaveBeenCalled()
+  })
+
+  it('flag mode allows opening mine cells to trigger game over', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    // Mock the board to have a mine
+    const mockBoard = [
+      [
+        { id: '0-0', x: 0, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-0', x: 1, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-0', x: 2, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+      [
+        { id: '0-1', x: 0, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-1', x: 1, y: 1, state: 'hidden' as const, type: 'mine' as const, mineCount: 0, isMine: true },
+        { id: '2-1', x: 2, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+      [
+        { id: '0-2', x: 0, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-2', x: 1, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-2', x: 2, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+    ]
+
+    // Mock the game state
+    act(() => {
+      result.current.gameState.cells = mockBoard
+      result.current.gameState.isFirstClick = false
+      result.current.gameState.isFlagMode = true
+    })
+
+    // Mock checkGameStatus to return 'lost' when a mine is hit
+    ;(checkGameStatus as jest.Mock).mockReturnValueOnce('lost')
+
+    // Click on the mine in flag mode (should open the mine and trigger game over)
+    act(() => {
+      result.current.handleCellClick(1, 1)
+    })
+
+    // The mine should be revealed
+    expect(revealCell).toHaveBeenCalledWith(expect.any(Array), 1, 1)
+    // Game should be over
+    expect(result.current.gameState.gameStatus).toBe('lost')
+    // Timer should be stopped
+    expect(result.current.isTimerRunning).toBe(false)
+  })
 })

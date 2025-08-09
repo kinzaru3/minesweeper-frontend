@@ -166,6 +166,7 @@ export const checkGameStatus = (board: Cell[][], mineCount: number): 'playing' |
     }
   }
   
+  // 地雷を踏んだ場合は即座にゲーム終了
   if (hasExploded) {
     return 'lost';
   }

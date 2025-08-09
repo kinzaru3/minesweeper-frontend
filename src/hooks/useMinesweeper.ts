@@ -97,8 +97,13 @@ export function useMinesweeper() {
           const clickedCell = newCells[y][x];
           
           if (clickedCell.state === 'hidden') {
-            // 隠れたセルにフラグを立てる
-            newCells = toggleFlag(newCells, x, y);
+            if (clickedCell.isMine) {
+              // 地雷を踏んだ場合はそのセルを開いてゲーム終了
+              newCells = revealCell(newCells, x, y);
+            } else {
+              // 地雷でない場合はフラグを立てる
+              newCells = toggleFlag(newCells, x, y);
+            }
           } else if (clickedCell.state === 'revealed' && clickedCell.type === 'number') {
             // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
             newCells = autoRevealCell(newCells, x, y);
@@ -113,14 +118,6 @@ export function useMinesweeper() {
           } else if (clickedCell.state === 'revealed' && clickedCell.type === 'number') {
             // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
             newCells = autoRevealCell(newCells, x, y);
-          }
-        }
-
-        // 旗立モード時でも地雷を踏んだ場合は、そのセルを開く
-        if (prevState.isFlagMode) {
-          const clickedCell = newCells[y][x];
-          if (clickedCell.state === 'hidden' && clickedCell.isMine) {
-            newCells = revealCell(newCells, x, y);
           }
         }
       }
