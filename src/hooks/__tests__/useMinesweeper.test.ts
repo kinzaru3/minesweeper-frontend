@@ -274,4 +274,49 @@ describe('useMinesweeper Hook', () => {
     // We can't directly test the result, but we can verify the function was called
     expect(result.current.gameState.gameStatus).toBeDefined()
   })
+
+  it('handles mine hit in flag mode correctly', () => {
+    const { result } = renderHook(() => useMinesweeper())
+
+    // Mock the board to have a mine
+    const mockBoard = [
+      [
+        { id: '0-0', x: 0, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-0', x: 1, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-0', x: 2, y: 0, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+      [
+        { id: '0-1', x: 0, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-1', x: 1, y: 1, state: 'hidden' as const, type: 'mine' as const, mineCount: 0, isMine: true },
+        { id: '2-1', x: 2, y: 1, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+      [
+        { id: '0-2', x: 0, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '1-2', x: 1, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+        { id: '2-2', x: 2, y: 2, state: 'hidden' as const, type: 'empty' as const, mineCount: 0, isMine: false },
+      ],
+    ]
+
+    // Mock the game state
+    act(() => {
+      result.current.gameState.cells = mockBoard
+      result.current.gameState.isFirstClick = false
+      result.current.gameState.isFlagMode = true
+    })
+
+    // Mock checkGameStatus to return 'lost' when a mine is hit
+    ;(checkGameStatus as jest.Mock).mockReturnValueOnce('lost')
+
+    // Click on the mine (this should trigger game over)
+    act(() => {
+      result.current.handleCellClick(1, 1)
+    })
+
+    // Game status should be 'lost'
+    expect(result.current.gameState.gameStatus).toBe('lost')
+    // Timer should be stopped
+    expect(result.current.isTimerRunning).toBe(false)
+    // revealAllMines should be called
+    expect(revealAllMines).toHaveBeenCalled()
+  })
 })

@@ -103,13 +103,6 @@ export function useMinesweeper() {
             // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
             newCells = autoRevealCell(newCells, x, y);
           }
-          
-          const stats = getGameStats(newCells);
-          return {
-            ...prevState,
-            cells: newCells,
-            flaggedCount: stats.flaggedCount,
-          };
         } else {
           // 通常モードの場合
           const clickedCell = newCells[y][x];
@@ -120,6 +113,14 @@ export function useMinesweeper() {
           } else if (clickedCell.state === 'revealed' && clickedCell.type === 'number') {
             // 既に開かれている数字のセルをクリックした場合、オートオープン機能を実行
             newCells = autoRevealCell(newCells, x, y);
+          }
+        }
+
+        // 旗立モード時でも地雷を踏んだ場合は、そのセルを開く
+        if (prevState.isFlagMode) {
+          const clickedCell = newCells[y][x];
+          if (clickedCell.state === 'hidden' && clickedCell.isMine) {
+            newCells = revealCell(newCells, x, y);
           }
         }
       }
